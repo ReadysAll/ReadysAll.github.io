@@ -1,0 +1,574 @@
+
+<!DOCTYPE html><html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="hexo-theme" content="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8" theme-name="Stellar" theme-version="1.26.8">
+  
+  <meta name="generator" content="Hexo 7.1.0">
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  
+  <title>mysql的使用 - 胖怪</title>
+
+  
+    <meta name="description" content="Mysql的使用mysql的数据类型数值类型整数类型   类型 占用的存储空间 无符号数取值范围 有符号数取值范围 含义    TINYINT 1字节 0～2^8^-1 -2^7^~2^7^-1 非常小的整数   SMALLINT 2字节 0～2^16^-1 -2^15^~2^15^-1 小的整数   MEDIUMINT 3字节 0～2^24^-1 -2^23^~2^23^-1 中等的整数   I">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mysql的使用">
+<meta property="og:url" content="http://cor0ner.github.io/2024/05/28/mysql/index.html">
+<meta property="og:site_name" content="胖怪">
+<meta property="og:description" content="Mysql的使用mysql的数据类型数值类型整数类型   类型 占用的存储空间 无符号数取值范围 有符号数取值范围 含义    TINYINT 1字节 0～2^8^-1 -2^7^~2^7^-1 非常小的整数   SMALLINT 2字节 0～2^16^-1 -2^15^~2^15^-1 小的整数   MEDIUMINT 3字节 0～2^24^-1 -2^23^~2^23^-1 中等的整数   I">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2024-05-28T01:58:09.000Z">
+<meta property="article:modified_time" content="2024-05-28T03:03:42.211Z">
+<meta property="article:author" content="胖怪">
+<meta property="article:tag" content="mysql">
+<meta name="twitter:card" content="summary">
+  
+  
+  
+  <meta name="keywords" content="mysql">
+
+  <!-- feed -->
+  
+
+  <link rel="stylesheet" href="/css/main.css?v=1.26.8">
+
+  
+
+  
+
+  
+  
+</head>
+<body>
+
+<div class="l_body content tech" id="start" layout="post" ><aside class="l_left"><div class="sidebar-container">
+
+
+<header class="header"><div class="logo-wrap"><a class="avatar" href="/about/"><div class="bg" style="opacity:0;background-image:url(https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/avatar/round/rainbow64@3x.webp);"></div><img no-lazy class="avatar" src="https://img0.baidu.com/it/u=1744159504,1943790860&fm=253&fmt=auto&app=120&f=JPEG?w=500&h=500" onerror="javascript:this.classList.add('error');this.src='https://gcore.jsdelivr.net/gh/cdn-x/placeholder@1.0.12/image/2659360.svg';"></a><a class="title" href="/"><div class="main" ff="title">胖怪</div><div class="sub normal cap">胖怪的奇妙之旅</div><div class="sub hover cap" style="opacity:0"> Get busy living or get busy dying.</div></a></div></header>
+
+<div class="nav-area">
+<div class="search-wrapper" id="search-wrapper"><form class="search-form"><a class="search-button" onclick="document.getElementById(&quot;search-input&quot;).focus();"><svg t="1705074644177" viewBox="0 0 1025 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1560" width="200" height="200"><path d="M1008.839137 935.96571L792.364903 719.491476a56.783488 56.783488 0 0 0-80.152866 0 358.53545 358.53545 0 1 1 100.857314-335.166073 362.840335 362.840335 0 0 1-3.689902 170.145468 51.248635 51.248635 0 1 0 99.217358 26.444296 462.057693 462.057693 0 1 0-158.255785 242.303546l185.930047 185.725053a51.248635 51.248635 0 0 0 72.568068 0 51.248635 51.248635 0 0 0 0-72.978056z" p-id="1561"></path><path d="M616.479587 615.969233a50.428657 50.428657 0 0 0-61.498362-5.534852 174.655348 174.655348 0 0 1-177.525271 3.484907 49.403684 49.403684 0 0 0-58.833433 6.76482l-3.074918 2.869923a49.403684 49.403684 0 0 0 8.609771 78.10292 277.767601 277.767601 0 0 0 286.992355-5.739847 49.403684 49.403684 0 0 0 8.404776-76.667958z" p-id="1562"></path></svg></a><input type="text" class="search-input" id="search-input" placeholder="站内搜索"></form><div id="search-result"></div><div class="search-no-result">没有找到内容！</div></div>
+
+
+<nav class="menu dis-select"><a class="nav-item active" title="博客" href="/" style="color:#1BCDFC"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M5.879 2.879C5 3.757 5 5.172 5 8v8c0 2.828 0 4.243.879 5.121C6.757 22 8.172 22 11 22h2c2.828 0 4.243 0 5.121-.879C19 20.243 19 18.828 19 16V8c0-2.828 0-4.243-.879-5.121C17.243 2 15.828 2 13 2h-2c-2.828 0-4.243 0-5.121.879M8.25 17a.75.75 0 0 1 .75-.75h3a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75M9 12.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5zM8.25 9A.75.75 0 0 1 9 8.25h6a.75.75 0 0 1 0 1.5H9A.75.75 0 0 1 8.25 9" clip-rule="evenodd"/><path fill="currentColor" d="M5.235 4.058C5 4.941 5 6.177 5 8v8c0 1.823 0 3.058.235 3.942L5 19.924c-.975-.096-1.631-.313-2.121-.803C2 18.243 2 16.828 2 14v-4c0-2.829 0-4.243.879-5.121c.49-.49 1.146-.707 2.121-.803zm13.53 15.884C19 19.058 19 17.822 19 16V8c0-1.823 0-3.059-.235-3.942l.235.018c.975.096 1.631.313 2.121.803C22 5.757 22 7.17 22 9.999v4c0 2.83 0 4.243-.879 5.122c-.49.49-1.146.707-2.121.803z" opacity=".5"/></svg></a><a class="nav-item" title="专栏" href="/topic/" style="color:#3DC550"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M14.25 4.48v3.057c0 .111 0 .27.02.406a.936.936 0 0 0 .445.683a.96.96 0 0 0 .783.072c.13-.04.272-.108.378-.159L17 8.005l1.124.534c.106.05.248.119.378.16a.958.958 0 0 0 .783-.073a.936.936 0 0 0 .444-.683c.021-.136.021-.295.021-.406V3.031c.113-.005.224-.01.332-.013C21.154 2.98 22 3.86 22 4.933v11.21c0 1.112-.906 2.01-2.015 2.08c-.97.06-2.108.179-2.985.41c-1.082.286-1.99 1.068-3.373 1.436c-.626.167-1.324.257-1.627.323V5.174c.32-.079 1.382-.203 1.674-.371c.184-.107.377-.216.576-.323m5.478 8.338a.75.75 0 0 1-.546.91l-4 1a.75.75 0 0 1-.364-1.456l4-1a.75.75 0 0 1 .91.546" clip-rule="evenodd"/><path fill="currentColor" d="M18.25 3.151c-.62.073-1.23.18-1.75.336a8.2 8.2 0 0 0-.75.27v3.182l.75-.356l.008-.005a1.13 1.13 0 0 1 .492-.13c.047 0 .094.004.138.01c.175.029.315.1.354.12l.009.005l.749.356V3.647z"/><path fill="currentColor" d="M12 5.214c-.334-.064-1.057-.161-1.718-.339C8.938 4.515 8.05 3.765 7 3.487c-.887-.234-2.041-.352-3.018-.412C2.886 3.007 2 3.9 2 4.998v11.146c0 1.11.906 2.01 2.015 2.079c.97.06 2.108.179 2.985.41c.486.129 1.216.431 1.873.726c1.005.451 2.052.797 3.127 1.034z" opacity=".5"/><path fill="currentColor" d="M4.273 12.818a.75.75 0 0 1 .91-.545l4 1a.75.75 0 1 1-.365 1.455l-4-1a.75.75 0 0 1-.545-.91m.909-4.545a.75.75 0 1 0-.364 1.455l4 1a.75.75 0 0 0 .364-1.455z"/></svg></a><a class="nav-item" title="探索" href="/explore/" style="color:#FA6400"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M20 12a8 8 0 1 1-16 0a8 8 0 0 1 16 0" opacity=".5"/><path fill="currentColor" d="M17.712 5.453c1.047-.193 2.006-.259 2.797-.152c.77.103 1.536.393 1.956 1.064c.446.714.312 1.542-.012 2.258c-.33.728-.918 1.499-1.672 2.268c-1.516 1.547-3.836 3.226-6.597 4.697c-2.763 1.472-5.495 2.484-7.694 2.92c-1.095.217-2.098.299-2.923.201c-.8-.095-1.6-.383-2.032-1.075c-.47-.752-.296-1.63.07-2.379c.375-.768 1.032-1.586 1.872-2.403L4 12.416c0 .219.083.71.168 1.146c.045.23.09.444.123.596c-.652.666-1.098 1.263-1.339 1.756c-.277.567-.208.825-.145.925c.072.116.305.305.937.38c.609.073 1.44.018 2.455-.183c2.02-.4 4.613-1.351 7.28-2.772c2.667-1.42 4.85-3.015 6.23-4.423c.694-.707 1.15-1.334 1.377-1.836c.233-.515.167-.75.107-.844c-.07-.112-.289-.294-.883-.374c-.542-.072-1.272-.041-2.163.112L16.87 5.656c.338-.101.658-.17.842-.203"/></svg></a><a class="nav-item" title="社交" href="/friends/" style="color:#F44336"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="m13.629 20.472l-.542.916c-.483.816-1.69.816-2.174 0l-.542-.916c-.42-.71-.63-1.066-.968-1.262c-.338-.197-.763-.204-1.613-.219c-1.256-.021-2.043-.098-2.703-.372a5 5 0 0 1-2.706-2.706C2 14.995 2 13.83 2 11.5v-1c0-3.273 0-4.91.737-6.112a5 5 0 0 1 1.65-1.651C5.59 2 7.228 2 10.5 2h3c3.273 0 4.91 0 6.113.737a5 5 0 0 1 1.65 1.65C22 5.59 22 7.228 22 10.5v1c0 2.33 0 3.495-.38 4.413a5 5 0 0 1-2.707 2.706c-.66.274-1.447.35-2.703.372c-.85.015-1.275.022-1.613.219c-.338.196-.548.551-.968 1.262" opacity=".5"/><path fill="currentColor" d="M10.99 14.308c-1.327-.978-3.49-2.84-3.49-4.593c0-2.677 2.475-3.677 4.5-1.609c2.025-2.068 4.5-1.068 4.5 1.609c0 1.752-2.163 3.615-3.49 4.593c-.454.335-.681.502-1.01.502c-.329 0-.556-.167-1.01-.502"/></svg></a></nav>
+</div>
+<div class="widgets">
+
+<widget class="widget-wrapper toc single" id="data-toc" collapse="false"><div class="widget-header dis-select"><span class="name">本文目录</span></div><div class="widget-body fs14"><div class="doc-tree active"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#mysql%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-text">mysql的数据类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%80%BC%E7%B1%BB%E5%9E%8B"><span class="toc-text">数值类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="toc-text">整数类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="toc-text">浮点数类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9A%E7%82%B9%E6%95%B0%E7%B1%BB%E5%9E%8B"><span class="toc-text">定点数类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%97%A5%E6%9C%9F%E5%92%8C%E6%97%B6%E9%97%B4%E7%B1%BB%E5%9E%8B"><span class="toc-text">日期和时间类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%B1%BB%E5%9E%8B"><span class="toc-text">字符串类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#ENUM%E5%92%8CSET%E7%B1%BB%E5%9E%8B"><span class="toc-text">ENUM和SET类型</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E7%B1%BB%E5%9E%8B"><span class="toc-text">二进制类型</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#BIT%E7%B1%BB%E5%9E%8B"><span class="toc-text">BIT类型</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BINARY-M-%E4%B8%8E-VARBINARY-M"><span class="toc-text">BINARY(M) 与 VARBINARY(M)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#BLOB%E7%B1%BB%E5%9E%8B"><span class="toc-text">BLOB类型</span></a></li></ol></li></ol></li></ol></div></div></widget>
+
+
+
+
+
+
+
+<widget class="widget-wrapper post-list"><div class="widget-header dis-select"><span class="name">最近更新</span></div><div class="widget-body fs14"><a class="item title active" href="/2024/05/28/mysql/"><span class="title">mysql的使用</span><svg class="active-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M21 11.098v4.993c0 3.096 0 4.645-.734 5.321c-.35.323-.792.526-1.263.58c-.987.113-2.14-.907-4.445-2.946c-1.02-.901-1.529-1.352-2.118-1.47a2.225 2.225 0 0 0-.88 0c-.59.118-1.099.569-2.118 1.47c-2.305 2.039-3.458 3.059-4.445 2.945a2.238 2.238 0 0 1-1.263-.579C3 20.736 3 19.188 3 16.091v-4.994C3 6.81 3 4.666 4.318 3.333C5.636 2 7.758 2 12 2c4.243 0 6.364 0 7.682 1.332C21 4.665 21 6.81 21 11.098" opacity=".5"/><path fill="currentColor" d="M9 5.25a.75.75 0 0 0 0 1.5h6a.75.75 0 0 0 0-1.5z"/></svg></a></div></widget>
+</div>
+
+</div></aside><div class="l_main" id="main">
+
+
+
+
+
+<div class="article banner top">
+  <div class="content">
+    
+<div class="top bread-nav footnote"><div class="left"><div class="flex-row" id="breadcrumb"><a class="cap breadcrumb" href="/">主页</a>
+<span class="sep"></span><a class="cap breadcrumb" href="/">文章</a><span class="sep"></span><a class="cap breadcrumb-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a> <span class="sep"></span> <a class="cap breadcrumb-link" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/mysql/">mysql</a></div>
+<div class="flex-row" id="post-meta"><span class="text created">发布于：<time datetime="2024-05-28T01:58:09.000Z">2024-05-28</time></span><span class="sep updated"></span><span class="text updated">更新于：<time datetime="2024-05-28T03:03:42.211Z">2024-05-28</time></span></div></div>
+</div>
+
+    
+    <div class="bottom">
+      <div class="text-area">
+        <h1 class="text title"><span>mysql的使用</span></h1>
+      </div>
+    </div>
+    
+  </div>
+  </div><article class="md-text content"><h1 id="Mysql的使用"><a href="#Mysql的使用" class="headerlink" title="Mysql的使用"></a>Mysql的使用</h1><h2 id="mysql的数据类型"><a href="#mysql的数据类型" class="headerlink" title="mysql的数据类型"></a>mysql的数据类型</h2><h3 id="数值类型"><a href="#数值类型" class="headerlink" title="数值类型"></a>数值类型</h3><h4 id="整数类型"><a href="#整数类型" class="headerlink" title="整数类型"></a>整数类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>占用的存储空间</th>
+<th>无符号数取值范围</th>
+<th>有符号数取值范围</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>TINYINT</td>
+<td>1字节</td>
+<td>0～2^8^-1</td>
+<td>-2^7^~2^7^-1</td>
+<td>非常小的整数</td>
+</tr>
+<tr>
+<td>SMALLINT</td>
+<td>2字节</td>
+<td>0～2^16^-1</td>
+<td>-2^15^~2^15^-1</td>
+<td>小的整数</td>
+</tr>
+<tr>
+<td>MEDIUMINT</td>
+<td>3字节</td>
+<td>0～2^24^-1</td>
+<td>-2^23^~2^23^-1</td>
+<td>中等的整数</td>
+</tr>
+<tr>
+<td>INT<br />INTEGER</td>
+<td>4字节</td>
+<td>0～2^32^-1</td>
+<td>-2^31^~2^31^-1</td>
+<td>标准的整数</td>
+</tr>
+<tr>
+<td>BIGINT</td>
+<td>8字节</td>
+<td>0～2^64^-1</td>
+<td>-2^63^~2^63^-1</td>
+<td>大整数</td>
+</tr>
+</tbody></table>
+<p>在数据类型后加上UNSIGNED表示无符号数</p>
+<h4 id="浮点数类型"><a href="#浮点数类型" class="headerlink" title="浮点数类型"></a>浮点数类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>占用的存储空间</th>
+<th>绝对值最小非0值</th>
+<th>绝对值最大值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>FLOAT</td>
+<td>4字节</td>
+<td>±1.175494351E-38</td>
+<td>±3.402823466E+38</td>
+<td>单精度浮点数</td>
+</tr>
+<tr>
+<td>DOUBLE</td>
+<td>8字节</td>
+<td>±2.2250738585072014E-308</td>
+<td>±1.7976931348623157E+308</td>
+<td>双精度浮点数</td>
+</tr>
+</tbody></table>
+<p>FLOAT(M,D)</p>
+<ul>
+<li><p>M表示该小数最多包含的有效数字个数</p>
+</li>
+<li><p>D表示小数保留小数点后十进制数字的个数</p>
+</li>
+</ul>
+<h4 id="定点数类型"><a href="#定点数类型" class="headerlink" title="定点数类型"></a>定点数类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>占用的存储空间</th>
+<th>取值范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DECIMAL(M,D)</td>
+<td>取决于M,D</td>
+<td>取决于M,D</td>
+</tr>
+</tbody></table>
+<p>M,D对应的存储空间</p>
+<table>
+<thead>
+<tr>
+<th>组中包含的十进制位</th>
+<th>占用存储空间大小</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1 or 2</td>
+<td>1</td>
+</tr>
+<tr>
+<td>3 or 4</td>
+<td>2</td>
+</tr>
+<tr>
+<td>5 or 6</td>
+<td>3</td>
+</tr>
+<tr>
+<td>7 or 8 or 9</td>
+<td>4</td>
+</tr>
+</tbody></table>
+<p>将M-D 划分为组 每隔9位划为一组 后不满9的自为一组 按上标计算得出占用空间</p>
+<h3 id="日期和时间类型"><a href="#日期和时间类型" class="headerlink" title="日期和时间类型"></a>日期和时间类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>占用的空间</th>
+<th>取值范围</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YEAR</td>
+<td>1字节</td>
+<td>1901 ～ 2155</td>
+<td>年份值</td>
+</tr>
+<tr>
+<td>DATE</td>
+<td>3字节</td>
+<td>1000-01-01 ～ 9999-12-31</td>
+<td>日期值</td>
+</tr>
+<tr>
+<td>TIME</td>
+<td>3字节</td>
+<td>-838:59:59 ～ 838:59:59</td>
+<td>时间值</td>
+</tr>
+<tr>
+<td>DATETIME</td>
+<td>8字节</td>
+<td>1000-01-01 00:00:00 ～ 9999-12-31 23:59:59</td>
+<td>日期和时间值</td>
+</tr>
+<tr>
+<td>TIMESTAMP</td>
+<td>4字节</td>
+<td>1970-01-01 00:00:01 ～ 2038-01-19 03:14:07</td>
+<td>时间戳</td>
+</tr>
+</tbody></table>
+<p>1s &#x3D; 1000ms &#x3D; 1000000us</p>
+<table>
+<thead>
+<tr>
+<th>保留的小数秒位数</th>
+<th>额外需要的存储空间</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>0</td>
+<td>0 字节</td>
+</tr>
+<tr>
+<td>1 or 2</td>
+<td>1 字节</td>
+</tr>
+<tr>
+<td>3 or 4</td>
+<td>2 字节</td>
+</tr>
+<tr>
+<td>5 or 6</td>
+<td>3 字节</td>
+</tr>
+</tbody></table>
+<p>日期格式化</p>
+<table>
+<thead>
+<tr>
+<th>符号</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>YYYY</td>
+<td>年份</td>
+</tr>
+<tr>
+<td>MM</td>
+<td>月份</td>
+</tr>
+<tr>
+<td>DD</td>
+<td>日</td>
+</tr>
+<tr>
+<td>hh</td>
+<td>时</td>
+</tr>
+<tr>
+<td>mm</td>
+<td>分</td>
+</tr>
+<tr>
+<td>ss</td>
+<td>秒</td>
+</tr>
+<tr>
+<td>uuuuu</td>
+<td>小数秒</td>
+</tr>
+</tbody></table>
+<h3 id="字符串类型"><a href="#字符串类型" class="headerlink" title="字符串类型"></a>字符串类型</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>最大长度</th>
+<th>存储空间要求</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>CHAR(M)</td>
+<td>M个字符</td>
+<td>M×W 字节</td>
+<td>固定长度的字符串</td>
+</tr>
+<tr>
+<td>VARCHAR(M)</td>
+<td>M个字符</td>
+<td>L+1或L+2字节</td>
+<td>可变长度的字符串</td>
+</tr>
+<tr>
+<td>TINYTEXT</td>
+<td>2^8^ - 1字节</td>
+<td>L+1字节</td>
+<td>非常小型的字符串</td>
+</tr>
+<tr>
+<td>TEXT</td>
+<td>2 ^16^ - 1 字节</td>
+<td>L+2字节</td>
+<td>小型的字符串</td>
+</tr>
+<tr>
+<td>MEDIUMTEXT</td>
+<td>2 ^32^ - 1 字节</td>
+<td>L+3字节</td>
+<td>中等大小的字符串</td>
+</tr>
+<tr>
+<td>LONGTEXT</td>
+<td>2 ^64^ - 1 字节</td>
+<td>L+4字节</td>
+<td>大型的字符串</td>
+</tr>
+</tbody></table>
+<ul>
+<li>M代表该数据最多能存储的字符数量，L代表实际向该类型的列中存放的字符串在特定字符集下占用的字节数目，W代表在特定字符集下编码一个字符最多需要的字节数</li>
+</ul>
+<h4 id="ENUM和SET类型"><a href="#ENUM和SET类型" class="headerlink" title="ENUM和SET类型"></a>ENUM和SET类型</h4><p>ENUM(‘str1’,’str2’,’str3’) 从里面选择一个</p>
+<p>SET(‘str1’,’str2’,’str3’) 从里面选择一个或多个数据</p>
+<h3 id="二进制类型"><a href="#二进制类型" class="headerlink" title="二进制类型"></a>二进制类型</h3><h4 id="BIT类型"><a href="#BIT类型" class="headerlink" title="BIT类型"></a>BIT类型</h4><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>占用的空间（单位：字节）</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BIT(M)</td>
+<td>近似为（M+7）&#x2F; 8</td>
+<td>存储M个二进制位的值</td>
+</tr>
+</tbody></table>
+<p>M的取值范围位 1 ～ 64</p>
+<h4 id="BINARY-M-与-VARBINARY-M"><a href="#BINARY-M-与-VARBINARY-M" class="headerlink" title="BINARY(M) 与 VARBINARY(M)"></a>BINARY(M) 与 VARBINARY(M)</h4><p>BINARY(M) 与 VARBINARY(M) 是用来存放字节的 M代表该类型中最多能存放的字节数量 CHAR VARCHAR用于存放字符的</p>
+<h4 id="BLOB类型"><a href="#BLOB类型" class="headerlink" title="BLOB类型"></a>BLOB类型</h4><p>TINYBLOB,BLOB,MEDIUMBLOB,LONGBLOB用于存储可变长度的二进制数据，比如图片、音频、压缩文件。很像TEXT类型，不过BLOB类型用来存储字节的，而TEXT用于存储字符的</p>
+
+<div class="article-footer fs14">
+    <section id="license">
+      <div class="header"><span>许可协议</span></div>
+      <div class="body"><p>本文采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">署名-非商业性使用-相同方式共享 4.0 国际</a> 许可协议，转载请注明出处。</p>
+</div>
+    </section>
+    </div>
+</article>
+
+
+
+
+
+
+
+<footer class="page-footer footnote"><hr><div class="text"><p>本站由 <a href="/">胖怪</a> 使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8">Stellar 1.26.8</a> 主题创建。<br>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+</div></footer>
+<div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11c0-3.771 0-5.657 1.172-6.828C4.343 3 6.229 3 10 3h4c3.771 0 5.657 0 6.828 1.172C22 5.343 22 7.229 22 11v2c0 3.771 0 5.657-1.172 6.828C19.657 21 17.771 21 14 21h-4c-3.771 0-5.657 0-6.828-1.172C2 18.657 2 16.771 2 13z"/><path id="sep" stroke-linecap="round" d="M5.5 10h6m-5 4h4m4.5 7V3"/></g></svg>
+  </button>
+</div>
+<div class="main-mask" onclick="sidebar.toggle()"></div></div></div><div class="scripts">
+<script type="text/javascript">
+  const stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      if (src.startsWith('/')){
+        src = stellar.config.root + src.substring(1);
+      }
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.version = '1.26.8';
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.26.8';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+    root : '/',
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://cdn.bootcdn.net/ajax/libs/jquery/3.7.1/jquery.min.js'
+  };
+
+  if ('local_search') {
+    stellar.search = {};
+    stellar.search.service = 'local_search';
+    if (stellar.search.service == 'local_search') {
+      let service_obj = Object.assign({}, {"field":"all","path":"/search.json","content":true,"sort":"-date"});
+      stellar.search[stellar.search.service] = service_obj;
+    }
+  }
+
+  // stellar js
+  stellar.plugins.stellar = Object.assign({"sites":"/js/plugins/sites.js","friends":"/js/plugins/friends.js","ghinfo":"/js/plugins/ghinfo.js","timeline":"/js/plugins/timeline.js","linkcard":"/js/plugins/linkcard.js","fcircle":"/js/plugins/fcircle.js","weibo":"/js/plugins/weibo.js","memos":"/js/plugins/memos.js","marked":"/js/plugins/marked.js"});
+
+  stellar.plugins.marked = Object.assign("https://cdn.bootcdn.net/ajax/libs/marked/4.0.18/marked.min.js");
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.bootcdn.net/ajax/libs/vanilla-lazyload/17.8.4/lazyload.min.js","transition":"fade"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@10.3/swiper-bundle.min.css","js":"https://unpkg.com/swiper@10.3/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://cdn.bootcdn.net/ajax/libs/scrollReveal.js/4.0.9/scrollreveal.min.js","distance":"16px","duration":800,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"flying_pages","flying_pages":"https://cdn.bootcdn.net/ajax/libs/flying-pages/2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.umd.min.js","css":"https://cdn.bootcdn.net/ajax/libs/fancyapps-ui/5.0.22/fancybox/fancybox.min.css","selector":null});
+  }
+  if ('false' == 'true') {
+    stellar.plugins.heti = Object.assign({"enable":false,"css":"https://unpkg.com/heti@0.9.2/umd/heti.min.css","js":"https://unpkg.com/heti@0.9.2/umd/heti-addon.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.copycode = Object.assign({"enable":true,"js":"/js/plugins/copycode.js","default_text":"Copy","success_text":"Copied","toast":"复制成功"});
+  }
+</script>
+
+<!-- required -->
+<script src="/js/main.js?v=1.26.8" async></script>
+
+<!-- optional -->
+
+
+
+
+
+
+<!-- inject -->
+
+</div></body></html>
